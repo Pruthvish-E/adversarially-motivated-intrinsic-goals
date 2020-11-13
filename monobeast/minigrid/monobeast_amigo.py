@@ -847,7 +847,7 @@ def train(flags):
                 to_log = dict(frames=frames)
                 to_log.update({k: stats[k] for k in stat_keys})
                 plogger.log(to_log)
-                if(datetime.now().minute%10 == 0):
+                if(datetime.now().minute%20 == 0):
                     checkpoint()
 
                 frames += T * B

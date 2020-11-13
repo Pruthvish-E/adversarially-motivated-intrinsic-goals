@@ -1,0 +1,18 @@
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-DoorKey-5x5-v0 \
+--num_actors 20 --modify --generator_batch_size 150 --generator_entropy_cost .05 \
+--generator_reward_negative -.3  \
+--savedir ./try6 --xpid 1 --total_frames 10000
+
+
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-DoorKey-5x5-v0 --num_actors 20 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3  --savedir ./try15 --xpid 1 --total_frames 1000000 --load_module ./try14/1/model.tar --use_lstm --num_lstm_layers 2
+
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-ObstructedMaze-1Q-v0 --num_actors 20 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3  --savedir ./obmaze1 --xpid 1 --total_frames 1000000 --load_module ./obmaze1/1/model.tar --use_lstm 
+
+
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-DoorKey-5x5-v0 --num_actors 100 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3 --num_threads 16 --savedir ./5x5 --xpid 1 --total_frames 10000000000 --load_module ./5x5/1/model.tar
+
+
+
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-KeyCorridorS3R3-v0 --num_actors 1 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3 --savedir ./s3r3try1 --xpid 1 --total_frames 10000000000 --load_module ./S3R3/model.tar
+
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-KeyCorridorS3R3-v0 --num_actors 200 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3 --savedir ./s3r3try1 --xpid 1 --total_frames 10000000000 --load_module ./S3R3/model.tar --num_threads 32
