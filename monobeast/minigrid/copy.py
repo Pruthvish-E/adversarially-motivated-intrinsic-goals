@@ -33,8 +33,7 @@ from torchbeast.core import prof
 from torchbeast.core import vtrace
 
 from env_utils import Observation_WrapperSetup, FrameStack
-from datetime import datetime
-print(datetime.now())
+
 
 # Some Global Variables
 # We start t* at 7 steps.
@@ -59,9 +58,6 @@ parser.add_argument('--disable_checkpoint', action='store_true',
                     help='Disable saving checkpoint.')
 parser.add_argument('--savedir', default='./experimentsMinigrid',
                     help='Root dir where experiment data will be saved.')
-parser.add_argument('--load_module', default='./latest',
-                    help='load module ')
-
 parser.add_argument('--total_frames', default=5000000000, type=int, metavar='T',
                     help='Total environment frames to train for.')
 parser.add_argument('--num_actors', default=4, type=int, metavar='N',
@@ -298,8 +294,7 @@ def act(
 
                 env_output = env.step(agent_output["action"])
                 #gym_env.render()
-                if(flags.num_actors == 1):
-                    gym_env.render()
+
                     
                     
 
@@ -743,13 +738,10 @@ def train(flags):
 
     model = Net(env.observation_space.shape, env.action_space.n, state_embedding_dim=flags.state_embedding_dim, num_input_frames=flags.num_input_frames, use_lstm=flags.use_lstm, num_lstm_layers=flags.num_lstm_layers)
     
-    try:
-        checkpoint = torch.load(flags.load_module, map_location="cpu") 
+    if(0):
+        checkpoint = torch.load(checkpointpath, map_location="cpu") 
         model.load_state_dict(checkpoint["model_state_dict"])
         generator_model.load_state_dict(checkpoint["generator_model_state_dict"])
-        print("##########################################################**** checkpoint loaded *****############################################################################################")
-    except:
-        print("no check point exists")
 
     global goal_count_dict
     goal_count_dict = torch.zeros(11).float().to(device=flags.device)
@@ -847,9 +839,6 @@ def train(flags):
                 to_log = dict(frames=frames)
                 to_log.update({k: stats[k] for k in stat_keys})
                 plogger.log(to_log)
-                if(datetime.now().minute%2 == 0):
-                    checkpoint()
-
                 frames += T * B
         if i == 0:
             logging.info("Batch and learn: %s", timings.summary())
@@ -1290,17 +1279,17 @@ def create_env(flags):
 
 """
 def test(flags):
-    checkpointpath = os.path.expandvars(os.path.expanduser("%s/%s" % (flags.savedir, "model.tar")))
-    model =  torch.load(checkpointpath)
-    model_state_dict = model["model_state_dict"]
-    generator_model_state_dict =  model["generator_model_state_dict"]
-    optimizer_state_dict = model["optimizer_state_dict"]
-    generator_model_optimizer_state_dict = model["generator_model_optimizer_state_dict"]
-    scheduler_state_dict = model["scheduler_state_dict"] 
-    generator_scheduler_state_dict = model["generator_scheduler_state_dict"]
-    vars_flags =  model["flags"]
+	checkpointpath = os.path.expandvars(os.path.expanduser("%s/%s" % (flags.savedir, "model.tar")))
+	model =  torch.load(checkpointpath)
+	model_state_dict = model["model_state_dict"]
+	generator_model_state_dict =  model["generator_model_state_dict"]
+	optimizer_state_dict = model["optimizer_state_dict"]
+	generator_model_optimizer_state_dict = model["generator_model_optimizer_state_dict"]
+	scheduler_state_dict = model["scheduler_state_dict"] 
+	generator_scheduler_state_dict = model["generator_scheduler_state_dict"]
+	vars_flags =  model["flags"]
 
-    
+	
 """
 
 
@@ -1354,11 +1343,13 @@ def test(flags, num_episodes: int = 10):
 def test_1(flags):  
     """Full training loop."""
     if flags.xpid is None:
-        checkpointpath = "./latest/model.tar"
-    else:
-        checkpointpath = os.path.expandvars(
-            os.path.expanduser("%s/%s/%s" % (flags.savedir, flags.xpid, "model.tar"))
-        )
+        flags.xpid = "torchbeast-%s" % time.strftime("%Y%m%d-%H%M%S")
+    plogger = file_writer.FileWriter(
+        xpid=flags.xpid, xp_args=flags.__dict__, rootdir=flags.savedir
+    )
+    checkpointpath = os.path.expandvars(
+        os.path.expanduser("%s/%s/%s" % (flags.savedir, flags.xpid, "model.tar"))
+    )
 
 
     T = flags.unroll_length
@@ -1375,6 +1366,7 @@ def test_1(flags):
 
     env = create_env(flags)
     #env.render()
+    checkpoint = torch.load(checkpointpath, map_location="cpu")
     #env = wrappers.FullyObsWrapper(env)
     if flags.num_input_frames > 1:
         env = FrameStack(env, flags.num_input_frames)
@@ -1382,17 +1374,11 @@ def test_1(flags):
     generator_model = Generator(env.observation_space.shape, env.width, env.height, num_input_frames=flags.num_input_frames)
 
     model = Net(env.observation_space.shape, env.action_space.n, state_embedding_dim=flags.state_embedding_dim, num_input_frames=flags.num_input_frames, use_lstm=flags.use_lstm, num_lstm_layers=flags.num_lstm_layers)
-    
-    try:
-        checkpoint = torch.load(checkpointpath, map_location="cpu")
-        model.load_state_dict(checkpoint["model_state_dict"])
-        generator_model.load_state_dict(checkpoint["generator_model_state_dict"])
-        print("loaded successfully")
-    except:
-        print("No saved model exists to test")
-        exit()
+    model.load_state_dict(checkpoint["model_state_dict"])
+    generator_model.load_state_dict(checkpoint["generator_model_state_dict"])
 
-    # global goal_count_dict
+
+    global goal_count_dict
     goal_count_dict = torch.zeros(11).float().to(device=flags.device)
 
     
@@ -1408,7 +1394,7 @@ def test_1(flags):
 
     # Add initial RNN state.
     initial_agent_state_buffers = []
-    for _ in range(1):
+    for _ in range(flags.num_buffers):
         state = model.initial_state(batch_size=1)
         for t in state:
             t.share_memory_()
@@ -1561,7 +1547,7 @@ def test_1(flags):
             actor.join(timeout=1)
 
     checkpoint()
-    #plogger.close()
+    plogger.close()
 
 
 
