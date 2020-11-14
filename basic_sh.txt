@@ -16,3 +16,6 @@ OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-Do
 OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-KeyCorridorS3R3-v0 --num_actors 1 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3 --savedir ./s3r3try1 --xpid 1 --total_frames 10000000000 --load_module ./S3R3/model.tar
 
 OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-KeyCorridorS3R3-v0 --num_actors 200 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3 --savedir ./s3r3try1 --xpid 1 --total_frames 10000000000 --load_module ./S3R3/model.tar --num_threads 32
+
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-
+DoorKey-5x5-v0 --num_actors 1 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3 --savedir ./5x5 --xpid 3 --total_frames 10000000000 --load_module ./5x5/model.tar
