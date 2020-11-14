@@ -76,7 +76,7 @@ parser.add_argument('--disable_cuda', action='store_true',
 # Loss settings.
 parser.add_argument('--entropy_cost', default=0.0005, type=float,
                     help='Entropy cost/multiplier.')
-parser.add_argument('--generator_entropy_cost', default=0.05, type=float,
+parser.add_argument('--generator_entropy_cost', default=0.01, type=float,
                     help='Entropy cost/multiplier.')
 parser.add_argument('--baseline_cost', default=0.5, type=float,
                     help='Baseline cost/multiplier.')
@@ -91,7 +91,7 @@ parser.add_argument('--learning_rate', default=0.001, type=float,
                     metavar='LR', help='Learning rate.')
 parser.add_argument('--generator_learning_rate', default=0.002, type=float,
                     metavar='LR', help='Learning rate.')
-parser.add_argument('--alpha', default=0.99, type=float,
+parser.add_argument('--alpha', default=0.7, type=float,
                     help='RMSProp smoothing constant.')
 parser.add_argument('--momentum', default=0, type=float,
                     help='RMSProp momentum.')

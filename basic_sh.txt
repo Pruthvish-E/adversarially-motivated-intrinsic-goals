@@ -19,3 +19,15 @@ OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-Ke
 
 OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-
 DoorKey-5x5-v0 --num_actors 1 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3 --savedir ./5x5 --xpid 3 --total_frames 10000000000 --load_module ./5x5/model.tar
+
+
+
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-DoorKey-16x16-v0 --num_actors 40 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3 --savedir ./16x16 --xpid 2 --total_frames 10000000000 --load_module ./16x16/1/model.tar --novelty --fix_seed
+
+
+
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-DoorKey-8x8-v0 --num_actors 40 --modify --generator_batch_size 150 --generator_entropy_cost .05 --generator_reward_negative -.3 --savedir ./8x8 --xpid 4 --total_frames 10000000000 --load_module ./8x8/model.tar --novelty 
+
+
+
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-DoorKey-8x8-v0 --num_actors 40 --modify --generator_batch_size 150 --generator_learning_rate 0.001 --generator_entropy_cost .01 --alpha 0.7 --generator_reward_negative -.3 --savedir ./8x8 --xpid 4 --total_frames 10000000000 --load_module ./8x8/model.tar --novelty 
