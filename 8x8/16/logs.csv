@@ -1,0 +1,2 @@
+# _tick,_time,frames,total_loss,mean_episode_return,pg_loss,baseline_loss,entropy_loss,gen_rewards,gg_loss,generator_entropy_loss,generator_baseline_loss,mean_intrinsic_rewards,mean_episode_steps,ex_reward,generator_current_target
+0,1605389099.7404954,0,-0.15102256834506989,0.6488541960716248,-0.05944860726594925,0.005257795099169016,-0.09683175384998322,,,,,,,,

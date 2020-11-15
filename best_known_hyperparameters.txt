@@ -1,1 +1,1 @@
-OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-DoorKey-8x8-v0 --num_actors 40 --modify --generator_batch_size 150 --generator_learning_rate 0.001 --generator_entropy_cost .01 --alpha 0.7 --savedir ./8x8 --xpid 10 --load_module ./8x8/10/model.tar 
+OMP_NUM_THREADS=1 python -m monobeast.minigrid.monobeast_amigo --env MiniGrid-DoorKey-16x16-v0 --num_actors 40 --modify --generator_batch_size 150 --generator_learning_rate 0.001 --generator_entropy_cost .01 --alpha 0.7 --savedir ./16x16 --xpid 40 --load_module ./16x16/30/model.tar 
